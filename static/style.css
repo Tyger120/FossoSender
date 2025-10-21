@@ -64,6 +64,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+select,
 textarea {
   width: 100%;
   padding: 12px;
@@ -74,9 +75,15 @@ textarea {
 }
 
 input:focus,
+select:focus,
 textarea:focus {
   outline: none;
   border-color: #3498db;
+}
+
+select.connection-select {
+  background: white;
+  cursor: pointer;
 }
 
 textarea {

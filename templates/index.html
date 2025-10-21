@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Sender</title>
+    <title>Email Campaign Sender</title>
+    <meta name="description" content="Send HTML email campaigns with configurable SMTP settings">
+    <meta name="theme-color" content="#3498db">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-192.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icon-192.png') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Email Sender">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -32,6 +43,13 @@
                         <input type="number" id="smtp_port" name="smtp_port" required 
                                value="587">
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="connection_type">Connection Type:</label>
+                    <select id="connection_type" name="connection_type" class="connection-select">
+                        <option value="starttls" selected>STARTTLS (Port 587)</option>
+                        <option value="ssl">SSL/TLS (Port 465)</option>
+                    </select>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -68,9 +86,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="recipient_email">Recipient Email:</label>
-                    <input type="email" id="recipient_email" name="recipient_email" required 
-                           placeholder="recipient@example.com">
+                    <label for="recipient_emails">Recipient Emails (one per line or comma separated):</label>
+                    <textarea id="recipient_emails" name="recipient_emails" rows="4" required 
+                              placeholder="recipient1@example.com&#10;recipient2@example.com&#10;recipient3@example.com"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="subject">Subject:</label>
@@ -276,6 +294,15 @@
     </div>
 
     <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+
         function testConnection() {
             const statusDiv = document.getElementById('connection-status');
             const button = event.target;
@@ -288,7 +315,8 @@
                 smtp_server: document.getElementById('smtp_server').value,
                 smtp_port: document.getElementById('smtp_port').value,
                 smtp_username: document.getElementById('smtp_username').value,
-                smtp_password: document.getElementById('smtp_password').value
+                smtp_password: document.getElementById('smtp_password').value,
+                connection_type: document.getElementById('connection_type').value
             };
             
             fetch('/test-connection', {
