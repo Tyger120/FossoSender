@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Email Sender</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('preview') }}" class="email-form">
+            <div class="form-section">
+                <h2>SMTP Configuration</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="smtp_server">SMTP Server:</label>
+                        <input type="text" id="smtp_server" name="smtp_server" required 
+                               placeholder="smtp.gmail.com" value="smtp.gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtp_port">SMTP Port:</label>
+                        <input type="number" id="smtp_port" name="smtp_port" required 
+                               value="587">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="smtp_username">SMTP Username:</label>
+                        <input type="text" id="smtp_username" name="smtp_username" required 
+                               placeholder="your.email@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtp_password">SMTP Password:</label>
+                        <input type="password" id="smtp_password" name="smtp_password" required 
+                               placeholder="Your app password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Email Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="from_name">From Name:</label>
+                        <input type="text" id="from_name" name="from_name" required 
+                               placeholder="Chase Bank" value="Chase Bank">
+                    </div>
+                    <div class="form-group">
+                        <label for="from_email">From Email:</label>
+                        <input type="email" id="from_email" name="from_email" required 
+                               placeholder="alerts@chase.com" value="alerts@chase.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="recipient_email">Recipient Email:</label>
+                    <input type="email" id="recipient_email" name="recipient_email" required 
+                           placeholder="recipient@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" required 
+                           value="Account Alert: Suspicious Activity Detected">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>HTML Content</h2>
+                <div class="form-group">
+                    <label for="html_content">Email HTML Content:</label>
+                    <textarea id="html_content" name="html_content" rows="20" required>
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot; /&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot; /&gt;
+&lt;title&gt;Chase &mdash; Account Alert&lt;/title&gt;
+&lt;style&gt;
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: &quot;Helvetica Neue&quot;, Arial, Helvetica, sans-serif;
+    background:#f3f4f6;
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding:2% 3%;
+    line-height:1.35;
+  }
+  .wrapper{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+  }
+  .side-bar-left,.side-bar-right{
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:3.8%;
+    min-width:18px;
+    background:#0e66b2;
+  }
+  .side-bar-left{left:0;border-top-left-radius:6px;border-bottom-left-radius:6px}
+  .side-bar-right{right:0;border-top-right-radius:6px;border-bottom-right-radius:6px}
+  .header{
+    padding:4.5% 6%;
+    padding-top:5.5%;
+    padding-bottom:3%;
+    display:flex;
+    align-items:flex-start;
+    gap:2%;
+    position:relative;
+  }
+  .logo{
+    width:18%;
+    max-width:120px;
+    height:auto;
+    object-fit:contain;
+  }
+  .label{
+    font-size:.92rem;
+    color:#666;
+    margin-top:6%;
+    margin-bottom:4%;
+    margin-left:1%;
+  }
+  .headline{
+    font-size:2.1rem;
+    line-height:1.05;
+    font-weight:700;
+    color:#333;
+    margin:0 6% 1.6% 6%;
+    word-break:break-word;
+  }
+  .account-panel{
+    margin:0 6% 1.5% 6%;
+    border-top:1px solid #e6e6e6;
+    padding-top:2.2%;
+  }
+  .account-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.1% 0;
+    border-bottom:1px solid transparent;
+    font-size:.95rem;
+  }
+  .muted{color:#666;font-size:.95rem}
+  .amount{
+    font-weight:700;
+    color:#222;
+    font-size:1rem;
+  }
+  .info{
+    margin:2% 6%;
+    color:#555;
+    font-size:.96rem;
+  }
+  .cta{
+    display:inline-block;
+    margin:1.6% 6%;
+    text-decoration:none;
+    padding:12px 24px;
+    border-radius:6px;
+    background:#0e66b2;
+    color:#fff;
+    font-weight:600;
+    font-size:.95rem;
+    text-align:center;
+  }
+  .footer{
+    margin:2.5% 6% 4% 6%;
+    color:#757575;
+    font-size:.86rem;
+    border-top:1px solid #f0f0f0;
+    padding-top:2%;
+  }
+  .footer a{color:#0e66b2;text-decoration:underline}
+  @media (max-width:520px){
+    .logo{width:26%}
+    .headline{font-size:1.6rem}
+    .side-bar-left,.side-bar-right{width:4.5%}
+    .header{padding:6% 5%}
+    .account-row{font-size:.92rem}
+    .cta{display:block;margin:1.6% 6%;text-align:center}
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;wrapper&quot; role=&quot;article&quot; aria-label=&quot;Chase account alert&quot;&gt;
+    &lt;div class=&quot;side-bar-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;side-bar-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
+
+    &lt;header class=&quot;header&quot;&gt;
+      &lt;img class=&quot;logo&quot; alt=&quot;Chase&quot; src=&quot;https://logo.clearbit.com/chase.com&quot;&gt;
+    &lt;/header&gt;
+
+    &lt;div class=&quot;label&quot;&gt;Account alert&lt;/div&gt;
+
+    &lt;h1 class=&quot;headline&quot;&gt;Your card has been locked due to suspicious transfer activity&lt;/h1&gt;
+
+    &lt;section class=&quot;account-panel&quot; aria-labelledby=&quot;account-heading&quot;&gt;
+      &lt;div class=&quot;account-row&quot; style=&quot;padding-top:.3rem;&quot;&gt;
+        &lt;div class=&quot;muted&quot;&gt;Account ending in&lt;/div&gt;
+        &lt;div class=&quot;muted&quot;&gt;(...2596)&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;account-row&quot;&gt;
+        &lt;div class=&quot;muted&quot;&gt;As of&lt;/div&gt;
+        &lt;div class=&quot;muted&quot;&gt;Monday, Oct 20, 2025&lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;account-row&quot; style=&quot;border-bottom:1px solid #e6e6e6;padding-bottom:.8rem&quot;&gt;
+        &lt;div class=&quot;muted&quot;&gt;Available balance&lt;/div&gt;
+        &lt;div class=&quot;amount&quot;&gt;$14,298.23&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;div class=&quot;info&quot;&gt;
+      &lt;p&gt;Our security systems detected unusual transfer activity on your account. For your protection, your card has been temporarily locked.&lt;/p&gt;
+      &lt;p&gt;If you recognize the activity, it may take a short time to appear in your available balance.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div style=&quot;margin-bottom:1.2rem;&quot;&gt;
+      &lt;a class=&quot;cta&quot; href=&quot;#&quot; role=&quot;button&quot; aria-label=&quot;Review account&quot;&gt;Review Account&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;footer class=&quot;footer&quot; role=&quot;contentinfo&quot;&gt;
+      &lt;p&gt;Securely access your accounts with the &lt;a href=&quot;https://www.chase.com/mobile&quot;&gt;Chase Mobile® app&lt;/a&gt; or &lt;a href=&quot;https://www.chase.com&quot;&gt;chase.com&lt;/a&gt;.&lt;/p&gt;
+      &lt;div style=&quot;margin-top:1rem;&quot;&gt;
+        &lt;strong&gt;ABOUT THIS MESSAGE&lt;/strong&gt;
+        &lt;p style=&quot;margin-top:.6rem;color:#808080&quot;&gt;This service email was sent based on your alert settings. Manage your settings in the Chase Mobile app or at chase.com/alerts.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div style=&quot;margin-top:1rem;color:#666;&quot;&gt;
+        &lt;p style=&quot;margin-bottom:.35rem;&quot;&gt;If you recognize all recent transactions, you can unlock your card immediately in the Chase Mobile app or at chase.com.&lt;/p&gt;
+        &lt;p style=&quot;margin-bottom:.35rem;&quot;&gt;Chase Customer Service: &lt;strong&gt;1-800-935-9935&lt;/strong&gt;&lt;/p&gt;
+        &lt;p style=&quot;margin-bottom:.35rem;&quot;&gt;24/7 Fraud Monitoring: &lt;strong&gt;1-888-297-0792&lt;/strong&gt;&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div style=&quot;margin-top:1rem;color:#808080;font-size:.83rem;&quot;&gt;
+        &lt;p&gt;This is an automated security message. Please do not reply to this email.&lt;/p&gt;
+        &lt;p style=&quot;margin-top:.6rem;&quot;&gt;© 2025 JPMorgan Chase &amp; Co. All rights reserved.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Preview Email</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
