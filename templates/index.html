@@ -45,6 +45,12 @@
                                placeholder="Your app password">
                     </div>
                 </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary" onclick="testConnection()">
+                        Test SMTP Connection
+                    </button>
+                    <div id="connection-status" style="margin-top: 10px;"></div>
+                </div>
             </div>
 
             <div class="form-section">
@@ -268,5 +274,47 @@
             </div>
         </form>
     </div>
+
+    <script>
+        function testConnection() {
+            const statusDiv = document.getElementById('connection-status');
+            const button = event.target;
+            
+            button.disabled = true;
+            button.textContent = 'Testing...';
+            statusDiv.innerHTML = '<div style="color: #666;">Testing connection...</div>';
+            
+            const data = {
+                smtp_server: document.getElementById('smtp_server').value,
+                smtp_port: document.getElementById('smtp_port').value,
+                smtp_username: document.getElementById('smtp_username').value,
+                smtp_password: document.getElementById('smtp_password').value
+            };
+            
+            fetch('/test-connection', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                button.disabled = false;
+                button.textContent = 'Test SMTP Connection';
+                
+                if (result.success) {
+                    statusDiv.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+                } else {
+                    statusDiv.innerHTML = `<div class="alert alert-error">${result.message}</div>`;
+                }
+            })
+            .catch(error => {
+                button.disabled = false;
+                button.textContent = 'Test SMTP Connection';
+                statusDiv.innerHTML = `<div class="alert alert-error">Error: ${error.message}</div>`;
+            });
+        }
+    </script>
 </body>
 </html>
