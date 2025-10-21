@@ -6,7 +6,17 @@ This is a Flask-based web application that enables users to send HTML emails thr
 
 ## Recent Changes
 
-**October 21, 2025**
+**October 21, 2025 - Latest Update**
+- **SSL/TLS Support**: Added support for both STARTTLS (port 587) and SSL/TLS (port 465) connections via dropdown selector
+- **Multiple Recipients**: Users can now send emails to multiple recipients (comma or newline separated)
+- **Email Validation**: Implemented robust server-side email validation to prevent malformed addresses from causing SMTP errors
+- **PWA Support**: Converted application to Progressive Web App (PWA) for offline capability and mobile installation
+  - Created manifest.json with app metadata
+  - Implemented service worker for offline caching
+  - Added PWA icons (192x192 and 512x512)
+  - Service worker served from root for proper scope control
+
+**October 21, 2025 - Previous Update**
 - Fixed critical security vulnerability: Implemented server-side session storage using Flask-Session to prevent SMTP credentials from being exposed in client-side cookies
 - Added SMTP connection testing functionality with dedicated `/test-connection` endpoint
 - Improved error handling with specific exception types (SMTPAuthenticationError, SMTPConnectError)
